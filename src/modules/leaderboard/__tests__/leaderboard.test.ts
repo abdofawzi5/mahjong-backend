@@ -36,7 +36,6 @@ beforeAll(async () => {
   const controller = new LeaderboardController(service);
   const router = createLeaderboardRouter(controller);
 
-  // @ts-ignore
   app = createApp(router);
 });
 
