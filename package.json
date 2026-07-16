@@ -6,8 +6,8 @@
   "scripts": {
     "lint": "eslint src/",
     "lint:fix": "eslint src/ --fix",
-    "test": "NODE_OPTIONS=--experimental-vm-modules jest",
-    "test:ci": "NODE_OPTIONS=--experimental-vm-modules jest --ci --coverage",
+    "test": "jest",
+    "test:ci": "jest --ci --coverage",
     "start": "node dist/server.js",
     "dev": "nodemon --exec tsx src/server.ts",
     "build": "tsc"
@@ -24,7 +24,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
-    "@faker-js/faker": "^10.5.0",
+    "@faker-js/faker": "^8.4.1",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
     "@types/jest": "^30.0.0",
