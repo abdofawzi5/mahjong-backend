@@ -1,12 +1,15 @@
 import { Request, Response } from 'express';
 import { LeaderboardService } from './leaderboard.service';
 
-const leaderboardService = new LeaderboardService();
-
 export class LeaderboardController {
+  private leaderboardService: LeaderboardService;
+
+  constructor(leaderboardService: LeaderboardService) {
+    this.leaderboardService = leaderboardService;
+  }
   public async getTopScores(req: Request, res: Response): Promise<void> {
     try {
-      const scores = await leaderboardService.getTopScores();
+      const scores = await this.leaderboardService.getTopScores();
       res.json(scores);
     } catch (error) {
       console.error(error);
@@ -21,7 +24,7 @@ export class LeaderboardController {
         res.status(400).json({ message: 'Invalid input data' });
         return;
       }
-      const updatedLeaderboard = await leaderboardService.addScore(name, score);
+      const updatedLeaderboard = await this.leaderboardService.addScore(name, score);
       res.status(201).json(updatedLeaderboard);
     } catch (error) {
       console.error(error);

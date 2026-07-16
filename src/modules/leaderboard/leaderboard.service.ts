@@ -4,8 +4,8 @@ import crypto from 'crypto';
 export class LeaderboardService {
   private repository: LeaderboardRepository;
 
-  constructor() {
-    this.repository = new LeaderboardRepository();
+  constructor(repository: LeaderboardRepository) {
+    this.repository = repository;
   }
 
   public async init(): Promise<void> {

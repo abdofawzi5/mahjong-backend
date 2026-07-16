@@ -1,21 +1,26 @@
 import 'dotenv/config';
-import express from 'express';
-import cors from 'cors';
+import { createApp } from './app';
+import { getDb } from './core/db/sqlite';
+import { LeaderboardRepository } from './modules/leaderboard/leaderboard.repository';
 import { LeaderboardService } from './modules/leaderboard/leaderboard.service';
-import { leaderboardRouter } from './modules/leaderboard/leaderboard.routes';
+import { LeaderboardController } from './modules/leaderboard/leaderboard.controller';
+import { createLeaderboardRouter } from './modules/leaderboard/leaderboard.routes';
 
-const app = express();
 const PORT = process.env.PORT || 3001;
-
-app.use(cors());
-app.use(express.json());
-
-app.use('/api/leaderboard', leaderboardRouter);
 
 const startServer = async () => {
   try {
-    const leaderboardService = new LeaderboardService();
-    await leaderboardService.init();
+    const db = getDb();
+    const leaderboardRepository = new LeaderboardRepository(db);
+    
+    // Initialize table before handling requests
+    await leaderboardRepository.initTable();
+
+    const leaderboardService = new LeaderboardService(leaderboardRepository);
+    const leaderboardController = new LeaderboardController(leaderboardService);
+    const leaderboardRouter = createLeaderboardRouter(leaderboardController);
+
+    const app = createApp(leaderboardRouter);
     
     app.listen(PORT, () => {
       console.log(`Server is running on port ${PORT}`);
